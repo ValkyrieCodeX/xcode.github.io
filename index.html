@@ -1,715 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>X Code - X Code</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg-pure-black: #000000;
-  --bg-dark: #0a0a0a;
-  --neon-white: #ffffff;
-  --neon-glow: rgba(255, 255, 255, 0.8);
-  --neon-glow-intense: rgba(255, 255, 255, 1);
-  --text-white: #ffffff;
-  --text-gray: #a0a0a0;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valkyrie</title>
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
 
-html{
-  scroll-behavior: smooth;
-}
-
-body{
-  background: var(--bg-pure-black);
-  color: var(--text-white);
-  font-family: 'Rajdhani', sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* Header Navigation */
-.header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: rgba(0, 0, 0, 0.95);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 60px;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-}
-
-.logo{
-  height: 50px;
-  width: 50px;
-  background: #000;
-  border: 2px solid var(--neon-white);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px var(--neon-glow);
-  overflow: hidden;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.logo:hover{
-  box-shadow: 0 0 30px var(--neon-glow-intense);
-  transform: scale(1.05);
-}
-
-.logo img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 3px;
-}
-
-.nav-menu{
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-.nav-item{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-gray);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.3s;
-  position: relative;
-  cursor: pointer;
-}
-
-.nav-item::after{
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--neon-white);
-  transition: width 0.3s;
-  box-shadow: 0 0 10px var(--neon-glow);
-}
-
-.nav-item:hover,
-.nav-item.active{
-  color: var(--neon-white);
-  text-shadow: 0 0 10px var(--neon-glow);
-}
-
-.nav-item:hover::after,
-.nav-item.active::after{
-  width: 100%;
-}
-
-/* Main Content */
-.main{
-  margin-top: 80px;
-  position: relative;
-  min-height: calc(100vh - 80px);
-}
-
-.page{
-  display: none;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  visibility: hidden;
-}
-
-.page.active{
-  display: block;
-  animation: fadeIn 0.6s forwards;
-  position: relative;
-  visibility: visible;
-}
-
-@keyframes fadeIn{
-  from{ opacity: 0; transform: translateY(20px); }
-  to{ opacity: 1; transform: translateY(0); }
-}
-
-/* Home Page - Game Showcase */
-.home-page{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 80px);
-  padding: 60px 40px;
-  text-align: center;
-}
-
-.game-badge{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-gray);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-bottom: 15px;
-}
-
-.game-title{
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(60px, 10vw, 120px);
-  font-weight: 900;
-  color: var(--neon-white);
-  text-shadow: 
-    0 0 20px var(--neon-glow),
-    0 0 40px var(--neon-glow),
-    0 0 60px var(--neon-glow);
-  margin-bottom: 20px;
-  letter-spacing: 8px;
-  line-height: 1;
-}
-
-.game-rating{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  font-size: 18px;
-  color: var(--text-gray);
-  margin-bottom: 50px;
-  font-weight: 500;
-}
-
-.stars{
-  color: var(--neon-white);
-  font-size: 20px;
-  letter-spacing: 3px;
-}
-
-.rating-number{
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  color: var(--neon-white);
-}
-
-.game-showcase{
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto 50px;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.game-showcase img{
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
-.action-buttons{
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  justify-content: center;
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.button-row{
-  display: flex;
-  gap: 15px;
-  width: 100%;
-}
-
-.btn-primary{
-  padding: 18px 50px;
-  background: var(--neon-white);
-  color: #000;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 0 30px var(--neon-glow);
-  flex: 1;
-}
-
-.btn-primary:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 0 50px var(--neon-glow-intense);
-}
-
-.btn-secondary{
-  padding: 18px 50px;
-  background: transparent;
-  color: var(--neon-white);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border: 2px solid var(--neon-white);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-  flex: 1;
-}
-
-.btn-secondary:hover{
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 30px var(--neon-glow);
-  transform: translateY(-3px);
-}
-
-/* Team Page */
-.team-page{
-  padding: 80px 60px;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: calc(100vh - 80px);
-}
-
-.section-title{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: 60px;
-  color: var(--neon-white);
-  text-shadow: 0 0 20px var(--neon-glow);
-  text-transform: uppercase;
-  letter-spacing: 5px;
-}
-
-.team-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.team-card{
-  background: var(--bg-dark);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 40px 30px;
-  text-align: center;
-  transition: all 0.4s;
-}
-
-.team-card:hover{
-  border-color: var(--neon-white);
-  box-shadow: 0 0 40px var(--neon-glow);
-  transform: translateY(-10px);
-}
-
-.team-avatar{
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 25px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid var(--neon-white);
-  box-shadow: 0 0 30px var(--neon-glow);
-}
-
-.team-avatar img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.team-name{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--neon-white);
-}
-
-.team-role{
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-gray);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-/* Modal */
-.modal-overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 2000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal-overlay.active{
-  display: flex;
-  animation: fadeIn 0.3s;
-}
-
-.modal-content{
-  background: var(--bg-pure-black);
-  border: 3px solid var(--neon-white);
-  border-radius: 20px;
-  max-width: 700px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 0 60px var(--neon-glow-intense);
-}
-
-.modal-header{
-  padding: 30px 30px 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-}
-
-.modal-close{
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: 2px solid var(--neon-white);
-  border-radius: 50%;
-  color: var(--neon-white);
-  font-size: 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-close:hover{
-  background: var(--neon-white);
-  color: #000;
-  transform: rotate(90deg);
-}
-
-.modal-title{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--neon-white);
-  text-shadow: 0 0 15px var(--neon-glow);
-}
-
-.modal-body{
-  padding: 30px;
-}
-
-.wiki-section{
-  margin-bottom: 30px;
-}
-
-.wiki-section:last-child{
-  margin-bottom: 0;
-}
-
-.wiki-heading{
-  font-family: 'Orbitron', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--neon-white);
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.wiki-text{
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--text-gray);
-  font-weight: 400;
-}
-
-.device-list{
-  list-style: none;
-  padding: 0;
-}
-
-.device-list li{
-  padding: 12px 20px;
-  background: var(--bg-dark);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: var(--text-white);
-}
-
-.device-list li::before{
-  content: '✓';
-  margin-right: 10px;
-  color: var(--neon-white);
-  font-weight: 900;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar{
-  width: 10px;
-}
-
-::-webkit-scrollbar-track{
-  background: var(--bg-pure-black);
-}
-
-::-webkit-scrollbar-thumb{
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background: rgba(255, 255, 255, 0.5);
-}
-
-/* Responsive */
-@media(max-width: 768px){
-  .header{
-    padding: 0 20px;
-  }
-  
-  .nav-menu{
-    gap: 20px;
-  }
-  
-  .nav-item{
-    font-size: 12px;
-  }
-  
-  .game-title{
-    font-size: 50px;
-    letter-spacing: 4px;
-  }
-  
-  .button-row{
-    flex-direction: column;
-  }
-  
-  .btn-primary,
-  .btn-secondary{
-    width: 100%;
-    padding: 16px 30px;
-  }
-  
-  .team-page{
-    padding: 60px 20px;
-  }
-  
-  .section-title{
-    font-size: 32px;
-  }
-  
-  .team-grid{
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+  <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
+  <div id="cursor"></div>
 
-<!-- Header -->
-<header class="header">
-  <a href="https://xCODE.team.io/" class="logo">
-    <img src="Images/ParadoxLLCLogo.png" alt="X Code">
-  </a>
-  <nav class="nav-menu">
-    <a class="nav-item active" data-page="home">Home</a>
-    <a class="nav-item" data-page="team">Team</a>
-    <a class="nav-item" href="Policy.html">Privacy</a>
-    <a class="nav-item" href="https://discord.gg/AUGvyjPjD6" target="_blank">Discord</a>
-  </nav>
-</header>
+  <!-- ENTER -->
+  <div id="enter">
+    <h1>alisdairr</h1>
+    <p>click anywhere</p>
+  </div>
 
-<!-- Main -->
-<main class="main">
-  
-  <!-- Home Page -->
-  <section class="page home-page active" id="home">
-    <div class="game-badge">X CODE Presents</div>
-    <h1 class="game-title">XCODE</h1>
-    <div class="game-rating">
-      <span class="stars">★★★★<span style="color: #555;">★</span></span>
-      <span class="rating-number">3.9</span>
-      <span>— Lethal Ape on Meta Quest</span>
-    </div>
-    
-    <div class="game-showcase">
-      <img src="Images/LethalApeBackgroundOld.png" alt="Lethal Ape VR">
-    </div>
-    
-    <div class="action-buttons">
-      <div class="button-row">
-        <button class="btn-primary" onclick="window.open('https://www.meta.com/experiences/lethal-ape-plus/6759999177415893/','_blank')">
-          Download on Meta Quest
-        </button>
-        <button class="btn-secondary" onclick="openWiki()">
-          View Details
-        </button>
-      </div>
-      <button class="btn-secondary" onclick="window.location.href='Games.html'">
-        View Our Other Games
-      </button>
-    </div>
-  </section>
-
-  <!-- Team Page -->
-  <section class="page team-page" id="team">
-    <h2 class="section-title">Our Team</h2>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-avatar">
-          <!-- Replace with: <img src="Images/damonk.png" alt="Damonk"> -->
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23000' width='150' height='150'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Orbitron' font-size='60' fill='%23fff'%3ED%3C/text%3E%3C/svg%3E" alt="Damonk">
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="id">
+          <img
+            class="pfp"
+            id="pfp"
+            src="https://cdn.discordapp.com/avatars/751578620278866010/ab1e4e06d91b85cf10170c320e7cefd1.png?size=512"
+            alt=""
+          />
+          <div class="statusdot" id="dot"></div>
+          <div class="handle" id="handle">—</div>
         </div>
-        <h3 class="team-name">Jamal</h3>
-        <p class="team-role">Developer</p>
+        <div class="stamp">est. 2026</div>
       </div>
-      
-      <div class="team-card">
-        <div class="team-avatar">
-          <!-- Replace with: <img src="Images/tdiz.png" alt="Tdiz"> -->
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23000' width='150' height='150'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Orbitron' font-size='60' fill='%23fff'%3ET%3C/text%3E%3C/svg%3E" alt="Tdiz">
-        </div>
-        <h3 class="team-name">Valkyrie</h3>
-        <p class="team-role">Developer</p>
-      </div>
-      
-      <div class="team-card">
-        <div class="team-avatar">
-          <!-- Replace with: <img src="Images/whitmore.png" alt="Whitmore"> -->
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23000' width='150' height='150'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Orbitron' font-size='60' fill='%23fff'%3EW%3C/text%3E%3C/svg%3E" alt="Whitmore">
-        </div>
-        <h3 class="team-name">None</h3>
-        <p class="team-role">Developer</p>
-      </div>
-    </div>
-  </section>
-  
-</main>
 
-<!-- Wiki Modal -->
-<div class="modal-overlay" id="wikiModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">X Code Wiki</h2>
-      <button class="modal-close" onclick="closeWiki()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="wiki-section">
-        <h3 class="wiki-heading">Description</h3>
-        <p class="wiki-text">
-          X Code combines the intense, physics-based movement of Gorilla Tag with horror survival gameplay. Players must navigate eerie, abandoned environments while evading scary baboons. Experience heart-pounding multiplayer action in VR as you swing, climb, and run for your life through haunted facilities and dark corridors.
+      <div class="name" id="home-name">Valkyrie<em>r</em></div>
+
+      <div class="bio">
+        <p>
+          I'm a <em>14-year-old</em> aspiring game developer, born and raised in <em>United Kingdom</em>.
+          I build games and interactive experiences — and I’m always learning.
         </p>
       </div>
-      
-      <div class="wiki-section">
-        <h3 class="wiki-heading">Supported Devices</h3>
-        <ul class="device-list">
-          <li>Meta Quest 2</li>
-          <li>Meta Quest 3s</li>
-          <li>Meta Quest 3</li>
-        </ul>
+
+      <div class="links">
+        <a class="linkbtn" href="https://github.com/Valkyrie" target="_blank" rel="noreferrer">
+          <div class="link-left">
+            <div class="linktitle">github</div>
+            <div class="linkdesc">code &amp; projects</div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+
+        <a class="linkbtn" href="https://buymeacoffee.com/Valkyrie" target="_blank" rel="noreferrer">
+          <div class="link-left">
+            <div class="linktitle">buymeacoffee</div>
+            <div class="linkdesc">support the work</div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+
+        <a class="linkbtn" href="https://ko-fi.com/xcodevalkyrie" target="_blank" rel="noreferrer">
+          <div class="link-left">
+            <div class="linktitle">ko-fi</div>
+            <div class="linkdesc">support the work</div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+      </div>
+
+      <div class="footer">
+        <div class="foot-left">uk • London</div>
+        <div class="foot-right">
+          <a class="mini" href="https://github.com/ValkyrieCodeX" target="_blank" rel="noreferrer">gh</a>
+          <a class="mini" href="https://buymeacoffee.com/alisdairdev" target="_blank" rel="noreferrer">bmac</a>
+          <a class="mini" href="https://ko-fi.com/xcodevalkyrie" target="_blank" rel="noreferrer">kofi</a>
+        </div>
+      </div>
+
+      <!-- AUDIO VISUALISER -->
+      <div class="viz" aria-hidden="true">
+        <canvas id="viz"></canvas>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-// Navigation
-function navigateTo(page) {
-  if(page === 'discord') return;
-  
-  // Update nav state
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if(n.getAttribute('data-page') === page) {
-      n.classList.add('active');
-    } else {
-      n.classList.remove('active');
-    }
-  });
-  
-  // Switch pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
-  
-  // Scroll to top AFTER the page switch completes
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 10);
-}
+  <audio id="audio" loop></audio>
 
-document.querySelectorAll('.nav-item').forEach(item => {
-  if(item.getAttribute('data-page')) {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      navigateTo(item.getAttribute('data-page'));
-    });
-  }
-});
-
-// Wiki Modal
-function openWiki() {
-  document.getElementById('wikiModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeWiki() {
-  document.getElementById('wikiModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Close modal on overlay click
-document.getElementById('wikiModal').addEventListener('click', (e) => {
-  if(e.target.id === 'wikiModal') {
-    closeWiki();
-  }
-});
-
-// Close modal on Escape key
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape') {
-    closeWiki();
-  }
-});
-</script>
-
+  <script src="./script.js"></script>
 </body>
 </html>
