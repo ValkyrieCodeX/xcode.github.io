@@ -1,274 +1,180 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LethalApeUltimate</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<style>
-
-/* ============================= */
-/* GLOBAL STYLES */
-/* ============================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+const {
+  Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+  LevelFormat, BorderStyle
+} = require('docx');
+const fs = require('fs');
+ 
+const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+ 
+function heading1(text) {
+  return new Paragraph({
+    heading: HeadingLevel.HEADING_1,
+    spacing: { before: 320, after: 120 },
+    children: [new TextRun({ text, bold: true, size: 28, font: "Arial", color: "6B2FBF" })]
+  });
 }
-
-html {
-    scroll-behavior: smooth;
+ 
+function heading2(text) {
+  return new Paragraph({
+    heading: HeadingLevel.HEADING_2,
+    spacing: { before: 240, after: 80 },
+    children: [new TextRun({ text, bold: true, size: 24, font: "Arial", color: "333333" })]
+  });
 }
-
-body {
-    background-color: #0d1117;
-    color: #e6edf3;
-    display: flex;
+ 
+function body(text) {
+  return new Paragraph({
+    spacing: { before: 80, after: 80 },
+    children: [new TextRun({ text, size: 22, font: "Arial", color: "444444" })]
+  });
 }
-
-/* ============================= */
-/* SIDEBAR */
-/* ============================= */
-
-.sidebar {
-    width: 80px;
-    height: 100vh;
-    background: #0f141b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    position: fixed;
+ 
+function bullet(text) {
+  return new Paragraph({
+    numbering: { reference: "bullets", level: 0 },
+    spacing: { before: 60, after: 60 },
+    children: [new TextRun({ text, size: 22, font: "Arial", color: "444444" })]
+  });
 }
-
-.sidebar h1 {
-    font-size: 24px;
-    margin-bottom: 40px;
+ 
+function spacer() {
+  return new Paragraph({ children: [new TextRun("")], spacing: { before: 80, after: 80 } });
 }
-
-.sidebar a {
-    text-decoration: none;
-    color: #8b949e;
-    margin: 20px 0;
-    font-size: 14px;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    transition: 0.3s ease;
-}
-
-.sidebar a:hover {
-    color: white;
-}
-
-/* ============================= */
-/* MAIN CONTENT */
-/* ============================= */
-
-.main {
-    margin-left: 80px;
-    padding: 80px;
-    width: 100%;
-}
-
-/* ============================= */
-/* HERO SECTION */
-/* ============================= */
-
-.hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.hero h3 {
-    color: #8b949e;
-    font-weight: 300;
-}
-
-.hero h1 {
-    font-size: 70px;
-    font-weight: 800;
-}
-
-.hero h2 {
-    font-size: 45px;
-    color: #8b949e;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    max-width: 600px;
-    margin-bottom: 30px;
-    color: #8b949e;
-}
-
-/* ============================= */
-/* BUTTONS */
-/* ============================= */
-
-.btn {
-    padding: 12px 30px;
-    margin-right: 15px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.btn-primary {
-    background: white;
-    color: black;
-}
-
-.btn-primary:hover {
-    background: #cccccc;
-}
-
-.btn-outline {
-    border: 1px solid white;
-    color: white;
-}
-
-.btn-outline:hover {
-    background: white;
-    color: black;
-}
-
-/* ============================= */
-/* SECTIONS */
-/* ============================= */
-
-section {
-    padding: 100px 0;
-}
-
-section h2 {
-    font-size: 40px;
-    margin-bottom: 20px;
-}
-
-.card {
-    background: #161b22;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-/* ============================= */
-/* RESPONSIVE */
-/* ============================= */
-
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-
-    .main {
-        margin-left: 0;
-        padding: 40px;
-    }
-
-    .hero h1 {
-        font-size: 42px;
-    }
-
-    .hero h2 {
-        font-size: 28px;
-    }
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h1>L</h1>
-    <a href="#home">Home</a>
-    <a href="#games">Games</a>
-    <a href="#discord">Discord</a>
-    <a href="#credits">Team</a>
-    <a href="#copyright">©</a>
-</div>
-
-<div class="main">
-
-    <!-- HERO -->
-    <section class="hero" id="home">
-        <h3>Hello, Welcome To</h3>
-        <h1>LethalApeUltimate</h1>
-        <h2>Game Development Studio.</h2>
-        <p>
-            Lethal Ape Ultimate creates VR games using almost Gorilla Tag-like locomotion!
-            We mainly focus on horror games.
-        </p>
-
-        <div>
-            <a href="#games" class="btn btn-primary">View Games</a>
-            <a href="#discord" class="btn btn-outline">Join Discord</a>
-        </div>
-    </section>
-
-    <!-- GAMES -->
-    <section id="games">
-        <h2>Our Games</h2>
-
-        <div class="card">
-            <h3>Lethal Ape</h3>
-        </div>
-
-        <div class="card">
-            <h3>Coming Soon...</h3>
-            <p>Lethal Ape Ultimate </p>
-        </div>
-    </section>
-
-    <!-- DISCORD -->
-    <section id="discord">
-        <h2>Discord</h2>
-
-        <div class="card">
-            <p>Join our community server to get updates and announcements.</p>
-
-            <div style="margin-top:25px;">
-                <a href="https://discord.gg/7K2yvaraRZ"
-                   class="btn btn-primary"
-                   target="_blank">
-                   Join Now!
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- CREDITS -->
-    <section id="credits">
-        <h2>Credits</h2>
-
-        <div class="card">
-            <p>Owner: ValkyrieXCode</p>
-            <p>Developer: Jamal</p>
-            <p>Discord Manager: None</p>
-            <p>Special Thanks: Valkyrie's friends for helping with some code</p>
-        </div>
-    </section>
-
-    <!-- COPYRIGHT -->
-    <section id="copyright">
-        <h2>Copyright</h2>
-
-        <div class="card">
-            <p>© 2026 LethalApe. All rights reserved.</p>
-            <p>Unauthorized copying or redistribution is prohibited.</p>
-        </div>
-    </section>
-
-</div>
-
-</body>
-</html>
+ 
+const doc = new Document({
+  numbering: {
+    config: [
+      {
+        reference: "bullets",
+        levels: [{
+          level: 0, format: LevelFormat.BULLET, text: "\u2022", alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } }
+        }]
+      }
+    ]
+  },
+  styles: {
+    default: { document: { run: { font: "Arial", size: 22 } } }
+  },
+  sections: [{
+    properties: {
+      page: {
+        size: { width: 11906, height: 16838 },
+        margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+      }
+    },
+    children: [
+      // Title
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 0, after: 200 },
+        children: [new TextRun({ text: "SEEK VR", bold: true, size: 52, font: "Arial", color: "6B2FBF" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 0, after: 80 },
+        children: [new TextRun({ text: "Privacy Policy", bold: true, size: 36, font: "Arial", color: "333333" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 0, after: 400 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "6B2FBF", space: 1 } },
+        children: [new TextRun({ text: `Effective Date: ${today}`, size: 20, font: "Arial", color: "888888", italics: true })]
+      }),
+      spacer(),
+ 
+      heading1("1. Introduction"),
+      body("Welcome to SEEK VR. This Privacy Policy explains how Valkyrie, operating under Seek VR (\"we\", \"us\", or \"our\"), handles information in connection with the SEEK VR application available on the Meta Quest platform."),
+      body("By using SEEK VR, you agree to the terms outlined in this Privacy Policy. If you do not agree, please discontinue use of the application."),
+      spacer(),
+ 
+      heading1("2. Information We Collect"),
+      heading2("Personal Data"),
+      body("SEEK VR does not directly collect, store, or process any personal data from its users. We do not require account registration, and we do not gather names, addresses, payment information, or similar personal identifiers."),
+      spacer(),
+ 
+      heading2("Platform Data (Meta Quest)"),
+      body("SEEK VR is distributed through the Meta Quest Store. Meta Platforms, Inc. may independently collect data as part of their platform services, including but not limited to:"),
+      bullet("Account and profile information"),
+      bullet("Device identifiers and hardware information"),
+      bullet("Usage analytics and crash reports"),
+      bullet("Purchase history"),
+      body("This data collection is governed by Meta's own Privacy Policy, available at: https://www.meta.com/legal/privacy-policy/"),
+      spacer(),
+ 
+      heading2("Multiplayer Features"),
+      body("SEEK VR includes online multiplayer functionality. During multiplayer sessions, the following may be transmitted solely for the purpose of enabling gameplay:"),
+      bullet("In-game actions and interactions"),
+      bullet("Session connection data"),
+      body("This data is used only to facilitate the multiplayer experience and is not stored, sold, or shared with third parties by us."),
+      spacer(),
+ 
+      heading1("3. How We Use Information"),
+      body("Since we do not collect personal data, we do not use it for any purpose. Any technical data processed during multiplayer sessions is used exclusively to enable real-time gameplay features and is not retained after the session ends."),
+      spacer(),
+ 
+      heading1("4. Data Sharing"),
+      body("We do not sell, trade, rent, or otherwise share any user data with third parties. The only data exchange that occurs is through Meta's platform infrastructure, which is subject to Meta's own policies."),
+      spacer(),
+ 
+      heading1("5. Children's Privacy"),
+      body("SEEK VR is rated for users aged 13 and older. We do not knowingly collect any personal information from children under the age of 13. If you are a parent or guardian and believe your child has provided personal information through our application, please contact us immediately at the email address below and we will take steps to address the situation."),
+      spacer(),
+ 
+      heading1("6. Data Security"),
+      body("Although we do not collect personal data, we are committed to maintaining the security and integrity of our application. We implement appropriate technical measures to protect against unauthorised access to our systems."),
+      spacer(),
+ 
+      heading1("7. Third-Party Services"),
+      body("SEEK VR operates on the Meta Quest platform. Your use of the platform is subject to Meta's Terms of Service and Privacy Policy. We encourage you to review Meta's privacy practices at: https://www.meta.com/legal/privacy-policy/"),
+      body("We are not responsible for the privacy practices or content of third-party services."),
+      spacer(),
+ 
+      heading1("8. Your Rights"),
+      body("Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete information held about you. Since we do not collect personal data, these rights primarily apply to data held by Meta. For data held by Meta, please refer to Meta's privacy tools and settings."),
+      body("For any privacy concerns related to SEEK VR directly, please contact us at the details below."),
+      spacer(),
+ 
+      heading1("9. Changes to This Privacy Policy"),
+      body("We may update this Privacy Policy from time to time. Any changes will be reflected with a new effective date at the top of this document. We encourage you to review this policy periodically. Continued use of SEEK VR after changes constitutes your acceptance of the updated policy."),
+      spacer(),
+ 
+      heading1("10. Contact Us"),
+      body("If you have any questions, concerns, or requests regarding this Privacy Policy, please contact us:"),
+      spacer(),
+      new Paragraph({
+        spacing: { before: 80, after: 80 },
+        children: [
+          new TextRun({ text: "Developer: ", bold: true, size: 22, font: "Arial", color: "333333" }),
+          new TextRun({ text: "Valkyrie", size: 22, font: "Arial", color: "444444" })
+        ]
+      }),
+      new Paragraph({
+        spacing: { before: 80, after: 80 },
+        children: [
+          new TextRun({ text: "Company: ", bold: true, size: 22, font: "Arial", color: "333333" }),
+          new TextRun({ text: "Seek VR", size: 22, font: "Arial", color: "444444" })
+        ]
+      }),
+      new Paragraph({
+        spacing: { before: 80, after: 80 },
+        children: [
+          new TextRun({ text: "Email: ", bold: true, size: 22, font: "Arial", color: "333333" }),
+          new TextRun({ text: "oliviadeacon2806@gmail.com", size: 22, font: "Arial", color: "6B2FBF" })
+        ]
+      }),
+      spacer(),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        border: { top: { style: BorderStyle.SINGLE, size: 4, color: "6B2FBF", space: 1 } },
+        spacing: { before: 400, after: 80 },
+        children: [new TextRun({ text: `© ${new Date().getFullYear()} Seek VR. All rights reserved.`, size: 18, font: "Arial", color: "888888", italics: true })]
+      }),
+    ]
+  }]
+});
+ 
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync('/mnt/user-data/outputs/SeekVR_Privacy_Policy.docx', buffer);
+  console.log('Done!');
+});
