@@ -1,180 +1,412 @@
-const {
-  Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
-  LevelFormat, BorderStyle
-} = require('docx');
-const fs = require('fs');
- 
-const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
- 
-function heading1(text) {
-  return new Paragraph({
-    heading: HeadingLevel.HEADING_1,
-    spacing: { before: 320, after: 120 },
-    children: [new TextRun({ text, bold: true, size: 28, font: "Arial", color: "6B2FBF" })]
-  });
-}
- 
-function heading2(text) {
-  return new Paragraph({
-    heading: HeadingLevel.HEADING_2,
-    spacing: { before: 240, after: 80 },
-    children: [new TextRun({ text, bold: true, size: 24, font: "Arial", color: "333333" })]
-  });
-}
- 
-function body(text) {
-  return new Paragraph({
-    spacing: { before: 80, after: 80 },
-    children: [new TextRun({ text, size: 22, font: "Arial", color: "444444" })]
-  });
-}
- 
-function bullet(text) {
-  return new Paragraph({
-    numbering: { reference: "bullets", level: 0 },
-    spacing: { before: 60, after: 60 },
-    children: [new TextRun({ text, size: 22, font: "Arial", color: "444444" })]
-  });
-}
- 
-function spacer() {
-  return new Paragraph({ children: [new TextRun("")], spacing: { before: 80, after: 80 } });
-}
- 
-const doc = new Document({
-  numbering: {
-    config: [
-      {
-        reference: "bullets",
-        levels: [{
-          level: 0, format: LevelFormat.BULLET, text: "\u2022", alignment: AlignmentType.LEFT,
-          style: { paragraph: { indent: { left: 720, hanging: 360 } } }
-        }]
-      }
-    ]
-  },
-  styles: {
-    default: { document: { run: { font: "Arial", size: 22 } } }
-  },
-  sections: [{
-    properties: {
-      page: {
-        size: { width: 11906, height: 16838 },
-        margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
-      }
-    },
-    children: [
-      // Title
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 0, after: 200 },
-        children: [new TextRun({ text: "SEEK VR", bold: true, size: 52, font: "Arial", color: "6B2FBF" })]
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 0, after: 80 },
-        children: [new TextRun({ text: "Privacy Policy", bold: true, size: 36, font: "Arial", color: "333333" })]
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 0, after: 400 },
-        border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "6B2FBF", space: 1 } },
-        children: [new TextRun({ text: `Effective Date: ${today}`, size: 20, font: "Arial", color: "888888", italics: true })]
-      }),
-      spacer(),
- 
-      heading1("1. Introduction"),
-      body("Welcome to SEEK VR. This Privacy Policy explains how Valkyrie, operating under Seek VR (\"we\", \"us\", or \"our\"), handles information in connection with the SEEK VR application available on the Meta Quest platform."),
-      body("By using SEEK VR, you agree to the terms outlined in this Privacy Policy. If you do not agree, please discontinue use of the application."),
-      spacer(),
- 
-      heading1("2. Information We Collect"),
-      heading2("Personal Data"),
-      body("SEEK VR does not directly collect, store, or process any personal data from its users. We do not require account registration, and we do not gather names, addresses, payment information, or similar personal identifiers."),
-      spacer(),
- 
-      heading2("Platform Data (Meta Quest)"),
-      body("SEEK VR is distributed through the Meta Quest Store. Meta Platforms, Inc. may independently collect data as part of their platform services, including but not limited to:"),
-      bullet("Account and profile information"),
-      bullet("Device identifiers and hardware information"),
-      bullet("Usage analytics and crash reports"),
-      bullet("Purchase history"),
-      body("This data collection is governed by Meta's own Privacy Policy, available at: https://www.meta.com/legal/privacy-policy/"),
-      spacer(),
- 
-      heading2("Multiplayer Features"),
-      body("SEEK VR includes online multiplayer functionality. During multiplayer sessions, the following may be transmitted solely for the purpose of enabling gameplay:"),
-      bullet("In-game actions and interactions"),
-      bullet("Session connection data"),
-      body("This data is used only to facilitate the multiplayer experience and is not stored, sold, or shared with third parties by us."),
-      spacer(),
- 
-      heading1("3. How We Use Information"),
-      body("Since we do not collect personal data, we do not use it for any purpose. Any technical data processed during multiplayer sessions is used exclusively to enable real-time gameplay features and is not retained after the session ends."),
-      spacer(),
- 
-      heading1("4. Data Sharing"),
-      body("We do not sell, trade, rent, or otherwise share any user data with third parties. The only data exchange that occurs is through Meta's platform infrastructure, which is subject to Meta's own policies."),
-      spacer(),
- 
-      heading1("5. Children's Privacy"),
-      body("SEEK VR is rated for users aged 13 and older. We do not knowingly collect any personal information from children under the age of 13. If you are a parent or guardian and believe your child has provided personal information through our application, please contact us immediately at the email address below and we will take steps to address the situation."),
-      spacer(),
- 
-      heading1("6. Data Security"),
-      body("Although we do not collect personal data, we are committed to maintaining the security and integrity of our application. We implement appropriate technical measures to protect against unauthorised access to our systems."),
-      spacer(),
- 
-      heading1("7. Third-Party Services"),
-      body("SEEK VR operates on the Meta Quest platform. Your use of the platform is subject to Meta's Terms of Service and Privacy Policy. We encourage you to review Meta's privacy practices at: https://www.meta.com/legal/privacy-policy/"),
-      body("We are not responsible for the privacy practices or content of third-party services."),
-      spacer(),
- 
-      heading1("8. Your Rights"),
-      body("Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete information held about you. Since we do not collect personal data, these rights primarily apply to data held by Meta. For data held by Meta, please refer to Meta's privacy tools and settings."),
-      body("For any privacy concerns related to SEEK VR directly, please contact us at the details below."),
-      spacer(),
- 
-      heading1("9. Changes to This Privacy Policy"),
-      body("We may update this Privacy Policy from time to time. Any changes will be reflected with a new effective date at the top of this document. We encourage you to review this policy periodically. Continued use of SEEK VR after changes constitutes your acceptance of the updated policy."),
-      spacer(),
- 
-      heading1("10. Contact Us"),
-      body("If you have any questions, concerns, or requests regarding this Privacy Policy, please contact us:"),
-      spacer(),
-      new Paragraph({
-        spacing: { before: 80, after: 80 },
-        children: [
-          new TextRun({ text: "Developer: ", bold: true, size: 22, font: "Arial", color: "333333" }),
-          new TextRun({ text: "Valkyrie", size: 22, font: "Arial", color: "444444" })
-        ]
-      }),
-      new Paragraph({
-        spacing: { before: 80, after: 80 },
-        children: [
-          new TextRun({ text: "Company: ", bold: true, size: 22, font: "Arial", color: "333333" }),
-          new TextRun({ text: "Seek VR", size: 22, font: "Arial", color: "444444" })
-        ]
-      }),
-      new Paragraph({
-        spacing: { before: 80, after: 80 },
-        children: [
-          new TextRun({ text: "Email: ", bold: true, size: 22, font: "Arial", color: "333333" }),
-          new TextRun({ text: "oliviadeacon2806@gmail.com", size: 22, font: "Arial", color: "6B2FBF" })
-        ]
-      }),
-      spacer(),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        border: { top: { style: BorderStyle.SINGLE, size: 4, color: "6B2FBF", space: 1 } },
-        spacing: { before: 400, after: 80 },
-        children: [new TextRun({ text: `© ${new Date().getFullYear()} Seek VR. All rights reserved.`, size: 18, font: "Arial", color: "888888", italics: true })]
-      }),
-    ]
-  }]
-});
- 
-Packer.toBuffer(doc).then(buffer => {
-  fs.writeFileSync('/mnt/user-data/outputs/SeekVR_Privacy_Policy.docx', buffer);
-  console.log('Done!');
-});
+<!DOCTYPE html>
+<!-- saved from url=(0027)https://lethalape.com/#hero -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lethal Ape - Official Website</title>
+    <link rel="icon" type="image/png" href="https://lethalape.com/TopLogo.png">
+    <style>
+        @font-face {
+            font-family: 'Kode';
+            src: url('https://6b6t.com/res/kode.ttf') format('truetype');
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Kode', monospace;
+            background: #000;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.015) 2px,
+                rgba(255,255,255,0.015) 4px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .nav-logo {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #fff; }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(140,213,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .drip-row {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 160px;
+            pointer-events: none;
+        }
+        .drip {
+            position: absolute;
+            top: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #004a7a, #8CD5FF, rgba(140,213,255,0));
+            border-radius: 0 0 4px 4px;
+            animation: drip linear infinite;
+        }
+        @keyframes drip {
+            0%   { height: 0; opacity: 1; }
+            80%  { opacity: 0.9; }
+            100% { height: 130px; opacity: 0; }
+        }
+        h1.game-title {
+            font-size: clamp(4.5rem, 17vw, 13rem);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 40px rgba(140,213,255,0.5), 0 0 80px rgba(140,213,255,0.2);
+            line-height: 0.9;
+            position: relative;
+            z-index: 1;
+            animation: flicker 8s linear infinite;
+        }
+        @keyframes flicker {
+            0%,95%,100% { opacity: 1; }
+            96% { opacity: 0.8; }
+            97% { opacity: 1; }
+            98.5% { opacity: 0.6; }
+        }
+        .title-sub {
+            font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin: 1.2rem 0 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .btn {
+            font-family: 'Kode', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+        .btn-red {
+            background: #2f4754;
+            color: #fff;
+        }
+        .btn-red:hover {
+            background: #3a5666;
+            box-shadow: 0 0 20px rgba(47,71,84,0.6);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-outline:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }
+
+        /* ── SHARED ── */
+        .wrap {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .wrap-wide {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        section { padding: 5rem 2rem; }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+        }
+        p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.9;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.3px;
+        }
+        p span { color: rgba(255,255,255,0.85); }
+
+        /* ── ABOUT ── */
+        #about { border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* ── FEATURES ── */
+        #features {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.01);
+        }
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 2.5rem;
+        }
+        .feat-card {
+            background: #000;
+            padding: 0;
+            transition: background 0.25s;
+            overflow: hidden;
+        }
+        .feat-card:hover { background: rgba(140,213,255,0.07); }
+        .feat-img-wrap {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+        }
+        .feat-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.8;
+            transition: opacity 0.3s, transform 0.4s;
+        }
+        .feat-card:hover .feat-img {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .feat-body { padding: 1.5rem; }
+        .feat-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+        .feat-title {
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .feat-desc {
+            font-size: 0.78rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.4);
+            margin: 0;
+        }
+
+        /* ── COMMUNITY ── */
+        #community { border-top: 1px solid rgba(255,255,255,0.05); }
+        .discord-box {
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background: rgba(255,255,255,0.015);
+            transition: border-color 0.3s;
+        }
+        .discord-box:hover { border-color: rgba(88,101,242,0.4); }
+        .discord-info p { margin: 0; font-size: 0.8rem; }
+        .discord-info .big {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── FOOTER ── */
+        .foot {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.15);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 500px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a class="nav-logo" href="https://lethalape.com/#hero">Lethal Ape</a>
+        <ul class="nav-links">
+            <li><a href="https://lethalape.com/#about">About</a></li>
+            <li><a href="https://lethalape.com/#features">Features</a></li>
+            <li><a href="https://lethalape.com/#community">Community</a></li>
+            <li><a href="https://www.meta.com/en-gb/experiences/lethal-ape/26271356395816252/" target="_blank">Play Free</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-glow"></div>
+        <div class="drip-row" id="drips"><div class="drip" style="left: 6%; animation-duration: 7.19791s; animation-delay: 6.99427s; width: 2.83036px;"></div><div class="drip" style="left: 13%; animation-duration: 8.34181s; animation-delay: 2.04787s; width: 3.71525px;"></div><div class="drip" style="left: 19%; animation-duration: 7.48629s; animation-delay: 3.77386s; width: 4.19953px;"></div><div class="drip" style="left: 26%; animation-duration: 9.06267s; animation-delay: 4.81804s; width: 2.07336px;"></div><div class="drip" style="left: 33%; animation-duration: 9.91108s; animation-delay: 7.02899s; width: 2.2964px;"></div><div class="drip" style="left: 40%; animation-duration: 4.92754s; animation-delay: 5.02635s; width: 3.39528px;"></div><div class="drip" style="left: 47%; animation-duration: 7.80876s; animation-delay: 1.2278s; width: 3.9344px;"></div><div class="drip" style="left: 54%; animation-duration: 6.72079s; animation-delay: 4.66052s; width: 2.03424px;"></div><div class="drip" style="left: 61%; animation-duration: 9.0365s; animation-delay: 0.915608s; width: 2.44552px;"></div><div class="drip" style="left: 68%; animation-duration: 9.5035s; animation-delay: 2.44217s; width: 3.53148px;"></div><div class="drip" style="left: 74%; animation-duration: 9.42782s; animation-delay: 6.46981s; width: 3.35819px;"></div><div class="drip" style="left: 81%; animation-duration: 7.95271s; animation-delay: 1.88483s; width: 4.43613px;"></div><div class="drip" style="left: 87%; animation-duration: 3.23866s; animation-delay: 3.38989s; width: 3.30921px;"></div><div class="drip" style="left: 93%; animation-duration: 9.1209s; animation-delay: 8.45588s; width: 2.59958px;"></div></div>
+        <h1 class="game-title">Lethal<br>Ape</h1>
+        <p class="title-sub">VR Horror &nbsp;·&nbsp; Meta Quest &nbsp;·&nbsp; Watch Out, Its near...</p>
+        <div class="hero-btns">
+            <a href="https://www.meta.com/en-gb/experiences/lethal-ape/26271356395816252/" target="_blank" class="btn btn-red">▶ &nbsp;Play Free on Meta Quest</a>
+            <a href="https://discord.gg/officiallethalape" target="_blank" class="btn btn-outline">Join Discord</a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="wrap">
+            <h2>What Awaits</h2>
+            <p>You play as the species known as <span>"Monke"</span> — descending into the dark, winding depths of a facility hiding <span>something unknown</span>.</p>
+            <p>Navigate pitch-black corridors and experimental chambers while a <span>lethal creature</span> hunts you through the shadows. Survive alone, or bring friends — just know that more noise means more danger.</p>
+            <p>Available <span>free</span> on Meta App Lab. No excuses not to be scared.</p>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="wrap-wide">
+            <div class="wrap">
+                <h2>Gameplay</h2>
+            </div>
+            <div class="feat-grid">
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/New_3.png" alt="Gorilla Locomotion"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/Screenshot_2026-02-04_134429_cleanup.png" alt="Total Darkness"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/5.png" alt="Unknown Creature"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/1.png" alt="Co-op Multiplayer"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/New_2.png" alt="Full VR Immersion"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/LALogo.png" alt="Constant Dread"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/6.png" alt="The Tormented"></div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-img-wrap"><img class="feat-img" src="./Lethal Ape - Official Website_files/2.png" alt="Cave Miner Pack"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community">
+        <div class="wrap">
+            <h2>Community</h2>
+            <p>Find teammates, share your worst scare clips, and get updates on new content from the official server.</p>
+            <div class="discord-box">
+                <div class="discord-info">
+                    <p class="big"><span>discord.gg/officiallethalape</span></p>
+                    <p>Official Lethal Ape Discord server</p>
+                </div>
+                <a href="https://discord.gg/officiallethalape" target="_blank" class="btn btn-outline">Join Server →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="foot">
+        <span>Sigma Cat Studios</span>
+        <span>© 2026 Monke Dev LTD</span>
+    </div>
+
+    <script>
+        const container = document.getElementById('drips');
+        [6,13,19,26,33,40,47,54,61,68,74,81,87,93].forEach(left => {
+            const d = document.createElement('div');
+            d.className = 'drip';
+            d.style.left = left + '%';
+            d.style.animationDuration = (3 + Math.random() * 7) + 's';
+            d.style.animationDelay = (Math.random() * 9) + 's';
+            d.style.width = (2 + Math.random() * 2.5) + 'px';
+            container.appendChild(d);
+        });
+    </script>
+
+
+</body></html>
